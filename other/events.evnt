@@ -1,0 +1,49 @@
+# Event time (s), Event type, Object ID, [Parameters]
+
+
+# fault in a bus
+#2.0, FAULT, 0, 0, 0
+#2.1, CLEAR_FAULT, 0
+
+
+
+# fault on a branch
+#1.0, TRIP_BRANCH, 2
+
+
+# create and correct a fault
+#1.0, DISABLE_BRANCH, 4
+#10.0, ENABLE_BRANCH, 4
+
+
+
+
+# examples of a change in the load of buses 0 and 19
+
+# normal
+#1.0, LOAD, 0, 97.60, 44.20
+# disturbance
+#1.0, LOAD, 0, 10, 20 
+#1.0, LOAD, 0, 200, 80 
+
+
+# normal
+#1.0, LOAD, 19, 680.00, 103.00 
+# disturbance
+1.0, LOAD, 19, 350, 20 
+#1.0, LOAD, 19, 1000, 150 
+
+
+
+# pause the simulation
+#4.0, PAUSE
+
+# create an interruption to check the execution of a controller
+#5.0, DEBUG_C, sec_volt_ctrl7
+
+
+
+
+
+
+
