@@ -5,25 +5,24 @@ Instructions
 ===========================
 
 Download the simulators:
-'''
-git clone https://github.com/carlobar/PYPOWER.git
-git clone https://github.com/carlobar/PYPOWER-Dynamics.git
-'''
+
+    git clone https://github.com/carlobar/PYPOWER.git
+    git clone https://github.com/carlobar/PYPOWER-Dynamics.git
 
 Install them with
-'''
-python3 setup.py install --user
-'''
+
+    python3 setup.py install --user
+
 
 Download the power grid model
-'''
-https://github.com/carlobar/pydyn_sim.git
-'''
+
+    git clone https://github.com/carlobar/pydyn_sim.git
+
 
 Run the simulations with 
-'''
-make run
-'''
+
+    make run
+
 
 
 The Makefile creates the folder 'simulations', which contains all the files to run the simulations. Plot the results using using the scripts in ./plot
