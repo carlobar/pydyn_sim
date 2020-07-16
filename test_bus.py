@@ -34,6 +34,7 @@ if __name__ == '__main__':
     
     n = ppc['bus'].shape[0]
     n_gen = ppc['gen'].shape[0]
+    n_branch = ppc['branch'].shape[0]
 
     '''
     # remove losses in the grid's connection
@@ -71,6 +72,8 @@ if __name__ == '__main__':
     elements = {}
     
     
+
+
     for i in range(n_gen):
         #G_i = sym_order6b('Generator'+ str(i) +'.mach', dynopt)
         G_i = ext_grid('GEN'+str(i), i, 0.1198, H[i], dynopt)
@@ -85,6 +88,12 @@ if __name__ == '__main__':
         
         freq_ctrl_i = controller('freq_ctrl'+ str(i) +'.dyn', dynopt)
         elements[freq_ctrl_i.id] = freq_ctrl_i
+
+    for i in range(n_branch):
+        if ppc['branch'][i, 8] == 0:
+            overcurrent_relay_i = controller('relay_branch'+ str(i) +'.dyn', dynopt)
+            elements[overcurrent_relay_i.id] = overcurrent_relay_i
+
     #i=0    
     #Ctrl_i = controller('ctrl'+ str(i) +'.dyn', dynopt)
     #elements[Ctrl_i.id] = Ctrl_i

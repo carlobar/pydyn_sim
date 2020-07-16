@@ -2,7 +2,7 @@
 
 
 # fault in a bus
-#2.0, FAULT, 0, 0, 0
+1.0, FAULT, 16, 0.5, 0.5
 #2.1, CLEAR_FAULT, 0
 
 
@@ -30,7 +30,7 @@
 # normal
 #1.0, LOAD, 19, 680.00, 103.00 
 # disturbance
-1.0, LOAD, 19, 350, 20 
+#1.0, LOAD, 19, 350, 20 
 #1.0, LOAD, 19, 1000, 150 
 
 

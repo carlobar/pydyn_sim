@@ -1,12 +1,13 @@
 model=case39
 
-    
+
 
 GEN_FREQ_CTRL = ./gen_freq_ctrl.py
 #GEN_VOLT_CTRL = ./gen_volt_ctrl.py
 GEN_SEC_VOLT_CTRL = ./gen_sec_volt_ctrl.py
 #GEN_GENERATORS = gen_generators.py
 GEN_REC = gen_recorder.py
+GEN_RELAYS = gen_overcurrent_relays.py
 
 REC = recorder.rcd
 
@@ -24,7 +25,10 @@ create_ctrl:
 create_gen:
 	python3 $(GEN_GENERATORS) $(SIM_DIR)/
 
-setup : create_ctrl
+create_protections:
+	python3 $(GEN_RELAYS) $(SIM_DIR)/
+
+setup : create_ctrl create_protections
 	#cp grid_models/$(model).py $(SIM_DIR)
 	cp other/* $(SIM_DIR)
 	cp events.evnt $(SIM_DIR)
