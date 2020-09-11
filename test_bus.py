@@ -17,6 +17,7 @@ from pydyn.recorder import recorder
 from pydyn.run_sim import run_sim
 
 # External modules
+from pypower.runpf import runpf
 from pypower.loadcase import loadcase
 import matplotlib.pyplot as plt
 import numpy as np
@@ -25,6 +26,30 @@ from pdb import set_trace as bp
 from timeit import default_timer as timer
 
 from parameters import case, t_sim, H
+
+
+
+from pypower.idx_bus import BUS_I, BUS_TYPE, PD, QD, GS, BS, BUS_AREA, \
+    VM, VA, BASE_KV, ZONE, VMAX, VMIN
+
+'''
+columns 0-12 must be included in input matrix (in case file)
+    0.  C{BUS_I}       bus number (1 to 29997)
+    1.  C{BUS_TYPE}    bus type (1 = PQ, 2 = PV, 3 = ref, 4 = isolated)
+    2.  C{PD}          real power demand (MW)
+    3.  C{QD}          reactive power demand (MVAr)
+    4.  C{GS}          shunt conductance (MW at V = 1.0 p.u.)
+    5.  C{BS}          shunt susceptance (MVAr at V = 1.0 p.u.)
+    6.  C{BUS_AREA}    area number, 1-100
+    7.  C{VM}          voltage magnitude (p.u.)
+    8.  C{VA}          voltage angle (degrees)
+    9.  C{BASE_KV}     base voltage (kV)
+    10. C{ZONE}        loss zone (1-999)
+    11. C{VMAX}        maximum voltage magnitude (p.u.)
+    12. C{VMIN}        minimum voltage magnitude (p.u.)
+'''
+
+
 
 if __name__ == '__main__':
     
@@ -35,6 +60,11 @@ if __name__ == '__main__':
     n = ppc['bus'].shape[0]
     n_gen = ppc['gen'].shape[0]
     n_branch = ppc['branch'].shape[0]
+
+
+    # define other swing buses
+    ppc['bus'][29, BUS_TYPE] = 3
+    ppc['bus'][32, BUS_TYPE] = 3
 
     '''
     # remove losses in the grid's connection
@@ -89,10 +119,16 @@ if __name__ == '__main__':
         freq_ctrl_i = controller('freq_ctrl'+ str(i) +'.dyn', dynopt)
         elements[freq_ctrl_i.id] = freq_ctrl_i
 
+
+    # install protection relays
+    '''
     for i in range(n_branch):
         if ppc['branch'][i, 8] == 0:
             overcurrent_relay_i = controller('relay_branch'+ str(i) +'.dyn', dynopt)
             elements[overcurrent_relay_i.id] = overcurrent_relay_i
+    '''
+
+
 
     #i=0    
     #Ctrl_i = controller('ctrl'+ str(i) +'.dyn', dynopt)

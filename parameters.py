@@ -12,7 +12,7 @@ n_gen = 10
 #H = np.ones(n_gen)*10
 H = np.array([500, 30.30, 35.80, 38.60, 26.00, 34.80, 26.40, 24.30, 34.50, 42.0])
 
-t_sim = 20
+t_sim = 300
 
 # to do: Add other parameters of the simulations
 
@@ -21,3 +21,7 @@ t_sim = 20
 current_tol = 0.5
 delay_open = .1
 delay_close = .1
+
+
+max_droop = 5
+

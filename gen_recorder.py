@@ -51,7 +51,7 @@ for i in range(n_gen):
     records += '\n'
 
 
-vars = ['Pm_droop', 'u', 'Omega', 'omega_error']
+vars = ['Pm_droop', 'u', 'Omega_local', 'omega_error']
 for i in range(n_gen):
     element = 'freq_ctrl'+str(i)
     for var in vars:

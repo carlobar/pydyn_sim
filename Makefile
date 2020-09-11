@@ -9,12 +9,18 @@ GEN_SEC_VOLT_CTRL = ./gen_sec_volt_ctrl.py
 GEN_REC = gen_recorder.py
 GEN_RELAYS = gen_overcurrent_relays.py
 
+PARAM = parameters.py
+
 REC = recorder.rcd
 
 SIM_DIR = simulations
 PLOT_DIR = plot
 
 DIR_cases = results_droop
+
+DIR_res_a = resiliency_scale_att
+DIR_res_b = resiliency_bias_att
+
 
 create_ctrl: 
 	if [ ! -d $(SIM_DIR) ]; then mkdir -p $(SIM_DIR); fi; \
@@ -76,7 +82,28 @@ exp_droop:
 	done
 
 
+max_droop = $(shell seq 0 1 5  )
+
+resiliency_a:
+	cp events_scale_att.evnt events.evnt
+	#echo $(max_droop)
+	for x in $(max_droop) ; do \
+		echo "\n\n*** Max_droop: $$x \n" ; \
+		sed -i "s/^max_droop.*/max_droop = $$x/" $(PARAM) ; \
+		$(MAKE) run ; \
+		if [ ! -d $(DIR_res_a)/case_$$x ]; then mkdir -p $(DIR_res_a)/case_$$x ; fi; \
+		cp $(SIM_DIR)/results.npy $(DIR_res_a)/case_$$x/ ; \
+	done
 
 
-
+resiliency_b:
+	cp events_bias_att.evnt events.evnt
+	#echo $(max_droop)
+	for x in $(max_droop) ; do \
+		echo "\n\n*** Max_droop: $$x \n" ; \
+		sed -i "s/^max_droop.*/max_droop = $$x/" $(PARAM) ; \
+		$(MAKE) run ; \
+		if [ ! -d $(DIR_res_b)/case_$$x ]; then mkdir -p $(DIR_res_b)/case_$$x ; fi; \
+		cp $(SIM_DIR)/results.npy $(DIR_res_b)/case_$$x/ ; \
+	done
 

@@ -65,7 +65,7 @@
 
 
 # test the attacks
-#160.0, SIGNAL, freq_ctrl0, attack_scale, 2.1
-160.0, SIGNAL, freq_ctrl0, attack_bias, 0.01
+160.0, SIGNAL, freq_ctrl0, attack_scale, 2.1
+#160.0, SIGNAL, freq_ctrl0, attack_bias, 0.01
 
 

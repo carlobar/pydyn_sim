@@ -1,8 +1,17 @@
 # Event time (s), Event type, Object ID, [Parameters]
 
+# isolate a faulty bus
+#1.0, DISABLE_BRANCH, 30
+#1.0, DISABLE_BRANCH, 25
+#1.0, DISABLE_BRANCH, 6
+
+# create an island
+#1.0, DISABLE_BRANCH, 23
+#1.0, DISABLE_BRANCH, 25
+
 
 # fault in a bus
-#2.0, FAULT, 0, 0, 0
+#1.0, FAULT, 16, 0.5, 0.5
 #2.1, CLEAR_FAULT, 0
 
 
@@ -30,7 +39,7 @@
 # normal
 #1.0, LOAD, 19, 680.00, 103.00 
 # disturbance
-1.0, LOAD, 19, 350, 20 
+#1.0, LOAD, 19, 350, 20 
 #1.0, LOAD, 19, 1000, 150 
 
 
@@ -43,7 +52,20 @@
 
 
 
+# create a disturbance
+1.0, LOAD, 0, 80, 30 
+# correct disturbance
+2.0, LOAD, 0, 97.60, 44.20
 
 
+
+
+
+
+
+
+# test the attacks
+160.0, SIGNAL, freq_ctrl0, attack_scale, 2.1
+#160.0, SIGNAL, freq_ctrl0, attack_bias, 0.01
 
 

@@ -7,7 +7,7 @@
 import sys
 import numpy as np
 from pypower.loadcase import loadcase
-from parameters import case, H
+from parameters import case, H, max_droop
 
 
 # load power system and extract information
@@ -30,8 +30,10 @@ else:
 
 #alpha = [.12 for x in H]
 alpha = [1.0 for x in H]
-k_consensus = [1/.16 for x in H]
-d_droop = [.05 for x in H]
+#k_consensus = [1/.16 for x in H]
+k_consensus = [1 for x in H]
+#d_droop = [.05 for x in H]
+d_droop = [.05*(1+x)/5 for x in range(len(H))]
 
 
 file_name_i = 'freq_ctrlith.dyn'
@@ -53,14 +55,16 @@ Pm0 = INPUT(Pm,GENx)
 
 Pm_droop = REF()
 Omega = REF()
+Omega_local = REF()
 '''
 
 ctrl_dyn = '''
 
 call_func = INT_FUNC(update_ctrl.freq)
+#call_func = INT_FUNC(update_ctrl.freq_resilient)
 Omega_nom = INT(Omega_dot, K, 1)
-Omega = MULT(Omega_nom, 1)
-u = SUM(Pm_droop, Omega)
+Omega_local = MULT(Omega_nom, 1)
+u = SUM(Pm_droop, Omega_local)
 Pm_tot = SUM(Pm_ref, u) 
 Pm = OUTPUT(Pm_tot, GENx)
 
@@ -79,6 +83,12 @@ SIGNAL = K = CONST(k_consensus)
 
 SIGNAL = Pm_ref = MULT(Pm0, 1)
 SIGNAL = omega_ref = CONST(1.0)
+
+SIGNAL = attack_scale = CONST(1.0)
+SIGNAL = attack_bias = CONST(0.0)
+
+SIGNAL = max_droop = CONST(max_droop**)
+
 
 '''
 
@@ -107,9 +117,10 @@ for i in range(n_gen):
 	input_ctrl_i = input_ctrl.replace('x', str(i))
 
 	
-	init = initialization.replace('d_droop', str(d_droop[i]))
-	init = init.replace('alpha', str(alpha[i]))
-	init = init.replace('k_consensus', str(k_consensus[i]))
+	init = initialization.replace('d_droop', str(d_droop[i]) )
+	init = init.replace('alpha', str(alpha[i]) )
+	init = init.replace('k_consensus', str(k_consensus[i]) )
+	init = init.replace('max_droop**', str(max_droop) )
 
 	sec_ctrl_i = signals_ctrl_gen.replace('x', str(i)) + input_ctrl_i + ctrl_dyn.replace('GENx', 'GEN'+str(i))
 	file_name = dest_dir + '/' + file_name_i.replace('ith', str(i))
